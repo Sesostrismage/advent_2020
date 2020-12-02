@@ -11,6 +11,7 @@ df = pd.read_csv(
 df['letter'] = df['letter'].str.replace(':', '')
 df[['min', 'max']] = df['limits'].str.split('-', expand=True)
 
+# First part of problem.
 total = 0
 
 for _, row in df.iterrows():
@@ -18,4 +19,16 @@ for _, row in df.iterrows():
         total += 1
 
 print(df.head())
+print(total)
+
+
+# Second part of problem.
+total = 0
+for _, row in df.iterrows():
+    if (
+        bool(row['code'][int(row['min'])-1] == row['letter'])
+        != bool(row['code'][int(row['max'])-1] == row['letter'])
+    ):
+        total += 1
+
 print(total)
