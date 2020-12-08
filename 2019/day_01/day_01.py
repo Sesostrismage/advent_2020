@@ -11,5 +11,20 @@ df = pd.read_csv(
 )
 
 # Part 1.
-df['fuel'] = (df['mass']/3).apply(np.floor) - 2
-print(f"Fuel required: {int((df['fuel']).sum())}")
+df[0] = ((df['mass']/3).apply(np.floor) - 2).clip(lower=0)
+print(f"Fuel required: {int((df[0]).sum())}")
+
+i = 1
+
+total_fuel = int((df[0]).sum())
+
+while True:
+    df[i] = ((df[i-1]/3).apply(np.floor) - 2).clip(lower=0)
+    extra_fuel = int((df[i]).sum())
+    total_fuel += extra_fuel
+    i += 1
+
+    if extra_fuel == 0:
+        break
+
+print(f"Total fuel required: {total_fuel}")
