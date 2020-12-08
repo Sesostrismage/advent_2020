@@ -33,9 +33,6 @@ def run_code(code_set):
                 idx += value
             elif code == 'nop':
                 idx += 1
-            else:
-                print(f"Wrong instruction! {code}")
-                break
 
     return acc, status
 
