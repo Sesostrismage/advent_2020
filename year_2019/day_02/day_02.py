@@ -9,11 +9,9 @@ txt = f.readline()
 f.close()
 
 code_list = [int(item) for item in txt.split(',')]
-code_list[1] = 12
-code_list[2] = 2
 
-ic = IntCode(code_list)
-ic.run_code()
+ic = IntCode(code_list, 12, 2)
+output = ic.run_code()
 
-print(ic.code_out[:5])
-print(f"Value at position 0: {ic.code_out[0]}")
+
+print(f"Value at position 0: {output}")

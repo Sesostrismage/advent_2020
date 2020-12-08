@@ -1,31 +1,37 @@
 class IntCode:
-    def __init__(self, code):
+    def __init__(self, code, input_1, input_2):
         self.code_in = code.copy()
-        self.code_out = code.copy()
+        self.memory = code.copy()
+        self.memory[1] = input_1
+        self.memory[2] = input_2
         self.status = None
 
     def run_code(self):
-        idx = 0
+        pointer = 0
 
         while True:
-            if idx > len(self.code_out) + 1:
+            if pointer > len(self.memory) + 1:
                 self.status = 'out_of_bounds'
                 break
             # Addition.
-            elif self.code_out[idx] == 1:
-                in_1_idx = self.code_out[idx+1]
-                in_2_idx = self.code_out[idx+2]
-                out_idx = self.code_out[idx+3]
-                self.code_out[out_idx] = self.code_out[in_1_idx] + self.code_out[in_2_idx]
+            elif self.memory[pointer] == 1:
+                param_1_idx = self.memory[pointer+1]
+                param_2_idx = self.memory[pointer+2]
+                out_idx = self.memory[pointer+3]
+                self.memory[out_idx] = self.memory[param_1_idx] + self.memory[param_2_idx]
+                pointer += 4
             # Multiplication.
-            elif self.code_out[idx] == 2:
-                in_1_idx = self.code_out[idx+1]
-                in_2_idx = self.code_out[idx+2]
-                out_idx = self.code_out[idx+3]
-                self.code_out[out_idx] = self.code_out[in_1_idx] * self.code_out[in_2_idx]
+            elif self.memory[pointer] == 2:
+                param_1_idx = self.memory[pointer+1]
+                param_2_idx = self.memory[pointer+2]
+                out_idx = self.memory[pointer+3]
+                self.memory[out_idx] = self.memory[param_1_idx] * self.memory[param_2_idx]
+                pointer += 4
             # Termination.
-            elif self.code_out[idx] == 99:
+            elif self.memory[pointer] == 99:
                 self.status = 'termintated'
                 break
 
-            idx += 4
+        output = self.memory[0]
+
+        return output
