@@ -1,6 +1,6 @@
 import os
 
-from intcode import IntCode
+from advent_of_code.year_2019.common.intcode import IntCode
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 
