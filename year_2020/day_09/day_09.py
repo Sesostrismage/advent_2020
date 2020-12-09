@@ -44,7 +44,6 @@ while n < len(df):
 
     n += 1
 
-roll_sum.fillna(0, inplace=True)
 sum_idx = (roll_sum[roll_sum == invalid_number]).index[0]
 sum_segment = df[0].iloc[sum_idx-n+1:sum_idx+1]
 
