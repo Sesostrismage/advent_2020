@@ -18,12 +18,17 @@ df_count = df.copy()
 df_prev = df.copy()
 c = 1
 
+print(f"Initial number of seats: {df.notnull().sum().sum()}")
+
 while True:
     print(f"Iteration {c}")
 
     for i, row in df.iterrows():
         for j, item in row.iteritems():
-            local_sum = df.iloc[i-1:i+2, j-1:j+2].sum().sum() - df.iloc[i, j]
+            local_sum = df.iloc[
+                max(0, i-1):min(i+2, df.index[-1]),
+                max(0, j-1):min(j+2, df.columns[-1])
+            ].sum().sum() - df.iloc[i, j]
             df_count.iloc[i, j] = local_sum
 
     for i, row in df_count.iterrows():
