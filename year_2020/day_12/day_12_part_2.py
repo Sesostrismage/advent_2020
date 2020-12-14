@@ -1,4 +1,3 @@
-import numpy as np
 import os
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
