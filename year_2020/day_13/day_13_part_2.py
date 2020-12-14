@@ -1,4 +1,3 @@
-import pandas as pd
 import os
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
@@ -7,44 +6,47 @@ f = open(os.path.join(curr_dir, "data.txt"))
 txt = f.readlines()
 f.close()
 
-txt = ['','67,7,59,61']
+# txt = ['', '67,x,7,59,61']
 
-bus_df = pd.DataFrame()
+bus_list = []
 
-c = 0
-c_abs = 0
+counter = 0
 
 for bus in txt[1].split(','):
-    if bus != 'x' and bus == txt[1].split(',')[0]:
-        bus_df = pd.concat([
-            bus_df,
-            pd.DataFrame({'Bus': [int(bus)], 'Offset': [c_abs]}, index=[int(bus)])
-        ])
-    elif bus != 'x':
-        c_abs += 1
-        bus_df = pd.concat([
-            bus_df,
-            pd.DataFrame({'Bus': [int(bus)], 'Offset': [c_abs]}, index=[int(bus)])
-        ])
+    if bus != 'x':
+        bus_list.append([int(bus), counter])
+
+    counter += 1
+
+print(bus_list)
+
+for bus in bus_list:
+    if bus == bus_list[0]:
+        factor = bus[0]
+        offset = bus[1]
     else:
-        c_abs += 1
+        step = 1
+        first_match = False
 
-max_bus = bus_df['Bus'].idxmax()
+        while True:
+            timestamp = step * factor + offset
+            if  (
+                (timestamp + bus[1]) % bus[0] == 0
+                and bus == bus_list[-1]
+            ):
+                print(f"Success! {timestamp}")
+                break
+            elif  (timestamp + bus[1]) % bus[0] == 0:
+                if first_match == False:
+                    new_offset = timestamp
+                    first_match = True
+                    step += 1
+                elif first_match == True:
+                    new_factor = timestamp - new_offset
+                    factor = new_factor
+                    offset = new_offset
+                    break
+            else:
+                step += 1
 
-print(bus_df)
-
-t = max_bus - bus_df['Offset'].loc[max_bus]
-
-while True:
-    test = (t + bus_df['Offset']).mod(bus_df['Bus'])
-
-    if t > 100000000000000:
-        print('Reached target area.')
-    elif t > 1000000000000000:
-        break
-    elif test.min() == 0 and test.max() == 0:
-        break
-    else:
-        t += max_bus
-
-print(t)
+print(timestamp)
