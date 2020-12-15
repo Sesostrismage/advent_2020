@@ -43,7 +43,7 @@ last = 20
 last = memory_game(last, array, 7, 2021)
 print(f"Part 1 results: {last}")
 
-# Part 1.
+# Part 2.
 array = np.array([
     [2, 1],
     [15, 2],
