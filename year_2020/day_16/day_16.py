@@ -27,9 +27,9 @@ def extract_numbers(l, vr, r):
 def check_ticket(l, e, vr):
     v = True
 
-    for number in l.split(','):
-        if not int(number) in vr:
-            e += int(number)
+    for n in l.split(','):
+        if not int(n) in vr:
+            e += int(n)
             v = False
 
     return e, v, vr
