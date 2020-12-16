@@ -2,8 +2,9 @@ import os
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 
-f = open(os.path.join(curr_dir, "data.txt"))
-# f = open(os.path.join(curr_dir, "test.txt"))
+# f = open(os.path.join(curr_dir, "data.txt"))
+# f = open(os.path.join(curr_dir, "test_part_1.txt"))
+f = open(os.path.join(curr_dir, "test_part_2.txt"))
 txt = f.readlines()
 f.close()
 
@@ -53,7 +54,12 @@ for line in txt_cleaned:
         error, valid_ticket, valid_range = check_ticket(line, error, valid_range)
 
         if valid_ticket:
-            valid_ticket_list.append(line)
+            valid_ticket_list.append([int(number) for number in line.split(',')])
 
 valid_range = sorted(list(set(valid_range)))
 print(f"Ticket scanning error rate: {error}")
+
+# Part 2.
+print(valid_ticket_list)
+
+# print(rules)
