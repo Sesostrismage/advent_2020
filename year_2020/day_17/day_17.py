@@ -34,3 +34,12 @@ kernel = np.ones([3,3,3])
 kernel[1,1,1] = 0
 dimension = iterate(dimension, kernel, 6)
 print(f"Number active, part 1: {np.sum(np.sum(np.sum(dimension)))}")
+
+# Part 2.
+a_part_1 = a.reshape(a.shape + (1,) + (1,))
+dimension = np.zeros([a_part_1.shape[0]+12, a_part_1.shape[1]+12, 13, 13])
+dimension[6:-6, 6:-6, 6:-6, 6:-6] = a_part_1
+kernel = np.ones([3,3,3,3])
+kernel[1,1,1,1] = 0
+dimension = iterate(dimension, kernel, 6)
+print(f"Number active, part 2: {np.sum(np.sum(np.sum(np.sum(dimension))))}")
