@@ -1,9 +1,4 @@
 import os
-import re
-
-def atomize(exp):
-    for idx, item in enumerate(exp.split()):
-        pass
 
 def evaluate(expr):
     number = None
@@ -24,25 +19,45 @@ def evaluate(expr):
 
     return number
 
+def find_parentheses(expr):
+    start_idx = 0
+    end_idx = 0
+
+    for idx, char in enumerate(expr):
+        if char == '(':
+            start_idx = idx
+        elif char == ')':
+            end_idx = idx
+            break
+
+    return start_idx, end_idx
+
+def collapse_parentheses(expr):
+    while True:
+        if '(' in expr:
+            start_idx, end_idx = find_parentheses(expr)
+            expr = expr[:start_idx] + str(evaluate(expr[start_idx+1:end_idx])) + expr[end_idx+1:]
+        else:
+            break
+
+    number = evaluate(expr)
+
+    return number
+
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 
 f = open(os.path.join(curr_dir, "data.txt"))
-# f = open(os.path.join(curr_dir, "test_part_1.txt"))
 txt = f.readlines()
 f.close()
 
 txt_cleaned = [item.strip() for item in txt]
-txt_cleaned = ['1 + 2 * 3 + 4 * 5 + 6']
-# txt_cleaned = [
-#     '1 + 2 * 3 + 4 * 5 + 6',
-#     '1 + (2 * 3) + (4 * (5 + 6))',
-#     '2 * 3 + (4 * 5)',
-#     '5 + (8 * 3 + 9 + 3 * 4 * 3)',
-#     '5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))'
-# ]
 
-print(txt_cleaned)
+total = 0
 
-num = evaluate(txt_cleaned[0])
-print(num)
+for item in txt_cleaned:
+    print(item)
+    num = collapse_parentheses(item)
+    total += num
+
+print(f"Part 1 sum: {total}")
