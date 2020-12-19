@@ -23,9 +23,46 @@ for line in txt_cleaned:
             [int(item) for item in rule_str.split('|')[1].split()]
         ]
     else:
-        val = rule_str.split()
+        val = [int(item) for item in rule_str.split()]
 
 
     rule_dict[rule_num] = val
 
 print(rule_dict)
+
+class RuleRoot:
+    def __init__(self, rd):
+        self.rd = rd
+        self.base_rule = []
+
+        for r in self.rd[0]:
+            self.base_rule.append(RuleNode(self.rd, r))
+
+class RuleNode:
+    def __init__(self, rd, r_key):
+        self.rd = rd
+        self.node_rule = None
+        self.node_type = None
+
+        rule_val = self.rd[r_key]
+
+        if isinstance(rule_val, str):
+            self.node_rule = r_key
+            self.node_type = 'end'
+        else:
+            if isinstance(rule_val[0], int):
+                self.node_rule = []
+                self.node_type = 'linear'
+                for i in rule_val:
+                    self.node_rule.append(RuleNode(self.rd, i))
+            else:
+                self.node_rule = {}
+
+                for n in range(2):
+                    self.node_rule[n] = []
+                    self.node_type = 'split'
+
+                    for s in rule_val[n]:
+                        self.node_rule[n].append(RuleNode(self.rd, s))
+
+rr = RuleRoot(rule_dict)
