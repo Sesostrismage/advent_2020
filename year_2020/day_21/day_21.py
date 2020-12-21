@@ -42,8 +42,9 @@ def get_possible_allergens_dict(l):
 
         pad[key] = list(allergen_set)
 
+    # print(pad)
+
     change = True
-    remove_list = []
 
     while True:
         if change == False:
@@ -52,16 +53,18 @@ def get_possible_allergens_dict(l):
         change = False
 
         for key in pad:
-            if isinstance(pad[key], list) & len(pad[key]) == 1:
+            if (isinstance(pad[key], list)) & (len(pad[key]) == 1):
                 pad[key] = pad[key][0]
-                remove_list.append(pad[key])
+                remove_item = pad[key]
+
                 change = True
+
+                # Remove singular ingredient from all other keys.
+                for remove_key in pad:
+                    if isinstance(pad[remove_key], list) and remove_item in pad[remove_key]:
+                        pad[remove_key].remove(remove_item)
+
                 break
-            elif isinstance(pad[key], list):
-                for remove_item in remove_list:
-                    if remove_item in pad[key]:
-                        pad[key].remove(remove_item)
-                        change = True
 
     al = []
 
