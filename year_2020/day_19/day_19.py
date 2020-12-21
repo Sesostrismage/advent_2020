@@ -3,9 +3,9 @@ import os
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 
-# f = open(os.path.join(curr_dir, "data.txt"))
+f = open(os.path.join(curr_dir, "data.txt"))
 # f = open(os.path.join(curr_dir, "test_1.txt"))
-f = open(os.path.join(curr_dir, "test_2.txt"))
+# f = open(os.path.join(curr_dir, "test_2.txt"))
 txt = f.readlines()
 f.close()
 
@@ -113,7 +113,7 @@ class RuleNode:
 rr = RuleRoot(rule_dict)
 # print(rr.base_rule)
 str_list = rr.yield_str()
-print(str_list)
+# print(str_list)
 
 match_count = 0
 
