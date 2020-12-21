@@ -61,6 +61,7 @@ def get_possible_allergens_dict(l):
                 for remove_item in remove_list:
                     if remove_item in pad[key]:
                         pad[key].remove(remove_item)
+                        change = True
 
     al = []
 
@@ -76,7 +77,7 @@ ingredient_list = get_ingredients(txt_cleaned)
 # print(ingredient_list)
 allergen_dict, allergen_list = get_possible_allergens_dict(txt_cleaned)
 print(allergen_dict)
-# print(allergen_list)
+print(allergen_list)
 
 non_allergen_count = 0
 
@@ -84,3 +85,5 @@ for ingredients in ingredient_list:
     non_allergen_count += len([item for item in ingredients if item not in allergen_list])
 
 print(non_allergen_count)
+dangerous_ingredient_string = ','.join(sorted(allergen_list))
+print(dangerous_ingredient_string)
