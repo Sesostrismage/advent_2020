@@ -68,7 +68,7 @@ def get_possible_allergens_dict(l):
 
     al = []
 
-    for key in pad:
+    for key in sorted(pad.keys()):
         if isinstance(pad[key], str):
             al.append(pad[key])
         else:
@@ -88,5 +88,5 @@ for ingredients in ingredient_list:
     non_allergen_count += len([item for item in ingredients if item not in allergen_list])
 
 print(non_allergen_count)
-dangerous_ingredient_string = ','.join(sorted(allergen_list))
+dangerous_ingredient_string = ','.join(allergen_list)
 print(dangerous_ingredient_string)
