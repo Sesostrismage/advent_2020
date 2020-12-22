@@ -34,20 +34,25 @@ def calc_score(card_list):
 
     return s
 
-while True:
-    p1_card = p1_list.pop(0)
-    p2_card = p2_list.pop(0)
+def play_simple_game(list_1, list_2):
 
-    if p1_card > p2_card:
-        p1_list += [p1_card, p2_card]
-    else:
-        p2_list += [p2_card, p1_card]
+    while True:
+        p1_card = list_1.pop(0)
+        p2_card = list_2.pop(0)
 
-    if len(p1_list) == 0:
-        score = calc_score(p2_list)
-        break
-    elif len(p2_list) == 0:
-        score = calc_score(p1_list)
-        break
+        if p1_card > p2_card:
+            list_1 += [p1_card, p2_card]
+        else:
+            list_2 += [p2_card, p1_card]
 
-print(score)
+        if len(list_1) == 0:
+            s = calc_score(list_2)
+            break
+        elif len(list_2) == 0:
+            s = calc_score(list_1)
+            break
+
+    return s
+
+# Part 1.
+print(play_simple_game(p1_list, p2_list))
