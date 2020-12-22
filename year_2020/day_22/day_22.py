@@ -124,8 +124,6 @@ file_path = os.path.join(curr_dir, "data.txt")
 # file_path = os.path.join(curr_dir, "test.txt")
 # file_path = os.path.join(curr_dir, "test_2.txt")
 
-p1_list, p2_list = load_hands(file_path)
-
 print(p1_list, p2_list)
 winner, score = play_recursive_game(p1_list.copy(), p2_list.copy())
 print(f"Part 2 winner: Player {winner}")
