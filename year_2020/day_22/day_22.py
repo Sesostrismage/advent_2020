@@ -1,41 +1,130 @@
-#Test 1.
-cup_list = [3, 8, 9, 1, 2, 5, 4, 6, 7]
+import os
 
-def cup_game(cl, number_moves=100):
-    current_cup_idx = 0
-    current_cup_label = cl[current_cup_idx]
+curr_dir = os.path.dirname(os.path.abspath(__file__))
 
-    for _ in range(number_moves):
-        # Pick up cups.
-        pickup_list = []
+def load_hands(f_path):
+    list_1 = []
+    list_2 = []
+    state = None
 
-        for _ in range(3):
-            if current_cup_idx + 1 < len(cl):
-                pickup_list.append(cl.pop(current_cup_idx + 1))
+    f = open(f_path)
+
+    for line in f.readlines():
+        if line == 'Player 1:\n':
+            state = 'p1'
+        elif line == 'Player 2:\n':
+            state = 'p2'
+        elif state == 'p1' and line != '\n':
+            list_1.append(int(line.strip()))
+        elif state == 'p2' and line != '\n':
+            list_2.append(int(line.strip()))
+
+    f.close()
+
+    return list_1, list_2
+
+def calc_score(card_list):
+    m = 1
+    s = 0
+
+    for card in reversed(card_list):
+        s += card * m
+        m += 1
+
+    return s
+
+def play_simple_game(list_1, list_2):
+    w = 0
+
+    while True:
+        p1_card = list_1.pop(0)
+        p2_card = list_2.pop(0)
+
+        if p1_card > p2_card:
+            list_1 += [p1_card, p2_card]
+        else:
+            list_2 += [p2_card, p1_card]
+
+        if len(list_1) == 0:
+            w = 2
+            s = calc_score(list_2)
+            break
+        elif len(list_2) == 0:
+            w = 1
+            s = calc_score(list_1)
+            break
+
+    return w, s
+
+def play_recursive_game(list_1, list_2):
+    prev_hands_list = []
+    game_end = False
+    s = 0
+    w = 0
+    r = 1
+
+    while True:
+        r += 1
+
+        if len(prev_hands_list) == 0:
+            prev_hands_list.append([list_1.copy(), list_2.copy()])
+        else:
+            for hands in prev_hands_list:
+                if hands[0] == list_1 and hands[1] == list_2:
+                    game_end = True
+                    w = 1
+                    s = calc_score(list_1)
+                    break
+
+            prev_hands_list.append([list_1.copy(), list_2.copy()])
+
+        if game_end:
+            break
+
+        p1_card = list_1.pop(0)
+        p2_card = list_2.pop(0)
+
+        if (len(list_1) < p1_card) or (len(list_2) < p2_card):
+            if p1_card > p2_card:
+                list_1 += [p1_card, p2_card]
             else:
-                pickup_list.append(cl.pop(0))
+                list_2 += [p2_card, p1_card]
 
-        # Select destination cup.
-        destination_cup_label = current_cup_label - 1
+            if len(list_1) == 0:
+                w = 2
+                s = calc_score(list_2)
+                break
+            elif len(list_2) == 0:
+                w = 1
+                s = calc_score(list_1)
+                break
 
-        while True:
-            if destination_cup_label in cl:
-                break
-            elif destination_cup_label < min(cl):
-                destination_cup_label = max(cl)
-                break
+        else:
+            w, s = play_recursive_game(list_1.copy()[:p1_card], list_2.copy()[:p2_card])
+
+            if w == 1:
+                list_1 += [p1_card, p2_card]
             else:
-                destination_cup_label -= 1
+                list_2 += [p2_card, p1_card]
 
-        destination_cup_idx = cl.index(destination_cup_label)
+    return w, s
 
-        # Place picked-up cups.
-        cl = cl[:destination_cup_idx + 1] + pickup_list + cl[destination_cup_idx + 1:]
+# Part 1.
+file_path = os.path.join(curr_dir, "data.txt")
+# file_path = os.path.join(curr_dir, "test.txt")
+# file_path = os.path.join(curr_dir, "test_2.txt")
 
-        # Select new current cup.
-        current_cup_idx = (current_cup_idx + 1) % len(cl)
-        current_cup_label = cl[current_cup_idx]
+p1_list, p2_list = load_hands(file_path)
+winner, score = play_simple_game(p1_list.copy(), p2_list.copy())
+print(f"Part 1 winner: Player {winner}")
+print(f"Part 1 score: {score}")
 
-        print(cl)
+# Part 2.
+file_path = os.path.join(curr_dir, "data.txt")
+# file_path = os.path.join(curr_dir, "test.txt")
+# file_path = os.path.join(curr_dir, "test_2.txt")
 
-cup_game(cup_list, number_moves=10)
+print(p1_list, p2_list)
+winner, score = play_recursive_game(p1_list.copy(), p2_list.copy())
+print(f"Part 2 winner: Player {winner}")
+print(f"Part 2 score: {score}")
