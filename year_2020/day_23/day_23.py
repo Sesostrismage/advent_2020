@@ -1,22 +1,20 @@
-#Test 1.
-cup_list = [3, 8, 9, 1, 2, 5, 4, 6, 7]
-
 def cup_game(cl, number_moves=100):
-    current_cup_idx = 0
-    current_cup_label = cl[current_cup_idx]
+    cc_idx = 0
+    cc_label = cl[cc_idx]
 
-    for _ in range(number_moves):
+    for n in range(number_moves):
+        print(n, end='\r')
         # Pick up cups.
         pickup_list = []
 
         for _ in range(3):
-            if current_cup_idx + 1 < len(cl):
-                pickup_list.append(cl.pop(current_cup_idx + 1))
+            if cc_idx + 1 < len(cl):
+                pickup_list.append(cl.pop(cc_idx + 1))
             else:
                 pickup_list.append(cl.pop(0))
 
         # Select destination cup.
-        destination_cup_label = current_cup_label - 1
+        destination_cup_label = cc_label - 1
 
         while True:
             if destination_cup_label in cl:
@@ -32,10 +30,30 @@ def cup_game(cl, number_moves=100):
         # Place picked-up cups.
         cl = cl[:destination_cup_idx + 1] + pickup_list + cl[destination_cup_idx + 1:]
 
+        # Re-find the current cup index.
+        cc_idx = cl.index(cc_label)
+
         # Select new current cup.
-        current_cup_idx = (current_cup_idx + 1) % len(cl)
-        current_cup_label = cl[current_cup_idx]
+        cc_idx = (cc_idx + 1) % len(cl)
+        cc_label = cl[cc_idx]
 
-        print(cl)
+    return cl, cc_label
 
-cup_game(cup_list, number_moves=10)
+
+# # Part 1.
+# cup_list = [5, 3, 8, 9, 1, 4, 7, 6, 2]
+# cup_list = cup_game(cup_list)
+# # Collect final string.
+# one_idx = cup_list.index(1)
+# final_list = cup_list[one_idx +1:] + cup_list[:one_idx]
+# final_list_as_str = [str(item) for item in final_list]
+# final_str = ''.join(final_list_as_str)
+# print(final_str)
+
+# Part 2.
+cup_list = [5, 3, 8, 9, 1, 4, 7, 6, 2] + list(range(10, 1000000 + 1))
+cup_list, current_cup_label = cup_game(cup_list.copy(), number_moves=10000000)
+current_cup_idx = cup_list.index(current_cup_label)
+cup_one_idx = cup_list.index(1)
+result = cup_list[cup_one_idx+1] * cup_list[cup_one_idx+2]
+print(result)
