@@ -62,7 +62,7 @@ def flip_tiles(a, number_flips=100):
     k[2, 0] = 0
     k[1, 1] = 0
 
-    for n in range(number_flips):
+    for _ in range(number_flips):
         c = convolve(a, k, mode='constant')
         white_bool = (a == 1) & ((c == 0) | (c > 2))
         black_bool = (a == 0) & (c == 2)
