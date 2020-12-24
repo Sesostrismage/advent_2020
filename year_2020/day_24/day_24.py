@@ -1,11 +1,12 @@
 import numpy as np
 import os
+import pandas as pd
 
 from scipy.ndimage.filters import convolve
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
-# file_path = os.path.join(curr_dir, "data.txt")
-file_path = os.path.join(curr_dir, "test_3.txt")
+file_path = os.path.join(curr_dir, "data.txt")
+# file_path = os.path.join(curr_dir, "test_3.txt")
 f = open(file_path)
 txt = f.readlines()
 f.close()
@@ -46,10 +47,12 @@ def calc_coords(dir_list_coords):
     return [x, y]
 
 def place_in_grid(cl):
-    a = np.zeros([100, 100])
+    df = pd.DataFrame(0, index=range(500, -501, -1), columns=range(-500, 501))
 
     for c_pair in cl:
-        a[c_pair[0] + 50, c_pair[1] + 50] = 1
+        df.loc[c_pair[1], c_pair[0]] = 1
+
+    a = df.values
 
     return a
 
@@ -58,7 +61,6 @@ def flip_tiles(a, number_flips=100):
     k[0, 2] = 0
     k[2, 0] = 0
     k[1, 1] = 0
-    print(k)
 
     for n in range(number_flips):
         c = convolve(a, k, mode='constant')
@@ -66,8 +68,6 @@ def flip_tiles(a, number_flips=100):
         black_bool = (a == 0) & (c == 2)
         a[white_bool] = 0
         a[black_bool] = 1
-
-        print(f"Round {n+1}, {np.sum(np.sum(a))} black tiles.")
 
     return np.sum(np.sum(a))
 
@@ -89,4 +89,5 @@ print(f"{len(coord_list)} black tiles.")
 
 # Part 2.
 array = place_in_grid(coord_list)
-number_black_tiles = flip_tiles(array, number_flips=10)
+number_black_tiles = flip_tiles(array)
+print(f"{np.sum(np.sum(array))} black tiles.")
