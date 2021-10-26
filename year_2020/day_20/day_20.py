@@ -3,11 +3,11 @@ import re
 
 
 def transposed(tile):
-    return list(''.join(row) for row in zip(*tile))
+    return list("".join(row) for row in zip(*tile))
 
 
 def reversed_tile(tile):
-    return [''.join(reversed(row)) for row in tile]
+    return ["".join(reversed(row)) for row in tile]
 
 
 def rotations(tile):
@@ -22,9 +22,11 @@ def group(tile):
 
 
 tiles = {}
-for tile in open(r"C:\Kode\advent_of_code\year_2020\day_20\data.txt").read().split('\n\n'):
-    lines = tile.strip().split('\n')
-    tile_id = int(re.fullmatch(r'Tile (\d+):', lines[0]).group(1))
+for tile in (
+    open(r"C:\Kode\advent_of_code\year_2020\day_20\data.txt").read().split("\n\n")
+):
+    lines = tile.strip().split("\n")
+    tile_id = int(re.fullmatch(r"Tile (\d+):", lines[0]).group(1))
     rows = lines[1:]
     tiles[tile_id] = group(rows)
 
@@ -35,8 +37,12 @@ stack = list(reversed(list((r, c) for c in range(n) for r in range(n))))
 
 def solve():
     if not stack:
-        print(arranged[0][0][0] * arranged[-1][0][0] * arranged[0][-1][0] *
-              arranged[-1][-1][0])
+        print(
+            arranged[0][0][0]
+            * arranged[-1][0][0]
+            * arranged[0][-1][0]
+            * arranged[-1][-1][0]
+        )
         return True
     (r, c) = stack.pop()
     for tile_id in list(tiles):
@@ -48,7 +54,8 @@ def solve():
                     continue
             if c > 0:
                 if list(row[-1] for row in arranged[r][c - 1][1]) != list(
-                        row[0] for row in tile):
+                    row[0] for row in tile
+                ):
                     continue
             arranged[r][c] = (tile_id, tile)
             if solve():
@@ -72,18 +79,18 @@ def get(r, c):
     return board[r // tile_n][c // tile_n][r % tile_n][c % tile_n]
 
 
-board = [
-    ''.join(get(r, c) for c in range(n * tile_n)) for r in range(n * tile_n)
-]
+board = ["".join(get(r, c) for c in range(n * tile_n)) for r in range(n * tile_n)]
 for pattern in group(
-    ['                  # ', '#    ##    ##    ###', ' #  #  #  #  #  #   ']):
+    ["                  # ", "#    ##    ##    ###", " #  #  #  #  #  #   "]
+):
     matches = 0
     for dr in range(len(board) - len(pattern) + 1):
         for dc in range(len(board[0]) - len(pattern[0]) + 1):
-            matches += all(pattern[r][c] == ' ' or board[r + dr][c + dc] == '#'
-                           for r in range(len(pattern))
-                           for c in range(len(pattern[0])))
+            matches += all(
+                pattern[r][c] == " " or board[r + dr][c + dc] == "#"
+                for r in range(len(pattern))
+                for c in range(len(pattern[0]))
+            )
     if matches:
-        print(''.join(board).count('#') -
-              ''.join(pattern).count('#') * matches)
+        print("".join(board).count("#") - "".join(pattern).count("#") * matches)
         break

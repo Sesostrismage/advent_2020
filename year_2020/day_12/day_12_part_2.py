@@ -9,40 +9,43 @@ f.close()
 
 txt_cleaned = [item.strip() for item in txt]
 
-turn_list = ['E', 'S', 'W', 'N']
+turn_list = ["E", "S", "W", "N"]
 
 lon = 0
 lat = 0
 
+
 def turn(turn_direction, val, pos_v, pos_w):
-    steps = int(val/90)
+    steps = int(val / 90)
 
     for _ in range(steps):
         x_rel = pos_w[0] - pos_v[0]
         y_rel = pos_w[1] - pos_v[1]
 
-        if turn_direction == 'R':
+        if turn_direction == "R":
             pos_w = [pos_v[0] + y_rel, pos_v[1] - x_rel]
-        elif turn_direction == 'L':
+        elif turn_direction == "L":
             pos_w = [pos_v[0] - y_rel, pos_v[1] + x_rel]
 
     return pos_w
 
+
 def move_abs(direction, speed, pos_w):
-    if direction == 'N':
+    if direction == "N":
         pos_x_new = pos_w[0]
         pos_y_new = pos_w[1] + speed
-    elif direction == 'E':
+    elif direction == "E":
         pos_x_new = pos_w[0] + speed
         pos_y_new = pos_w[1]
-    elif direction == 'S':
+    elif direction == "S":
         pos_x_new = pos_w[0]
         pos_y_new = pos_w[1] - speed
-    elif direction == 'W':
+    elif direction == "W":
         pos_x_new = pos_w[0] - speed
         pos_y_new = pos_w[1]
 
     return [pos_x_new, pos_y_new]
+
 
 def move_rel(pos_v, pos_w, speed):
     x_rel = pos_w[0] - pos_v[0]
@@ -55,7 +58,8 @@ def move_rel(pos_v, pos_w, speed):
 
     return pos_v, pos_w
 
-vessel_heading = 'E'
+
+vessel_heading = "E"
 pos_vessel = [0, 0]
 pos_waypoint = [10, 1]
 
@@ -63,13 +67,13 @@ for instruction in txt_cleaned:
     part1 = instruction[0]
     part2 = int(instruction[1:])
 
-    if part1 in ['L', 'R']:
+    if part1 in ["L", "R"]:
         pos_waypoint = turn(part1, part2, pos_vessel, pos_waypoint)
 
-    elif part1 in ['N', 'E', 'S', 'W']:
+    elif part1 in ["N", "E", "S", "W"]:
         pos_waypoint = move_abs(part1, part2, pos_waypoint)
 
-    elif part1 in ['F']:
+    elif part1 in ["F"]:
         pos_vessel, pos_waypoint = move_rel(pos_vessel, pos_waypoint, part2)
 
 print(f"Manhattan distance: {abs(pos_vessel[0]) + abs(pos_vessel[1])}")

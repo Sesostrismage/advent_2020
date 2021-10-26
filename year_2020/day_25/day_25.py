@@ -9,6 +9,7 @@ subject_number_card = 7
 public_key_card = 12232269
 public_key_door = 19452773
 
+
 def find_loop_size(sn, pk):
     divisor = 20201227
     value = 1
@@ -24,6 +25,7 @@ def find_loop_size(sn, pk):
 
     return ls
 
+
 def find_encryption_key(sn, ls):
     divisor = 20201227
     value = 1
@@ -32,6 +34,7 @@ def find_encryption_key(sn, ls):
         value = (value * sn) % divisor
 
     return value
+
 
 loop_size_card = find_loop_size(subject_number_card, public_key_card)
 print(loop_size_card)

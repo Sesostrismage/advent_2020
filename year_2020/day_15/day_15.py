@@ -1,6 +1,7 @@
 import datetime
 import numpy as np
 
+
 def memory_game(m, l, s, stop):
     for i in np.arange(start=s, stop=stop):
         if l not in m:
@@ -12,6 +13,7 @@ def memory_game(m, l, s, stop):
             l = l_new
 
     return l
+
 
 # Test.
 mem = {0: 1, 3: 2}

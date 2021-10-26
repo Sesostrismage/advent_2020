@@ -1,29 +1,31 @@
 import os
 
+
 def evaluate_basic(expr):
     number = None
     operator = None
     expr_list = expr.split()
 
     for component in expr_list:
-        if component in ['+', '*']:
+        if component in ["+", "*"]:
             operator = component
         elif operator is None:
             number = int(component)
-        elif operator == '+':
+        elif operator == "+":
             number += int(component)
             operator = None
-        elif operator == '*':
+        elif operator == "*":
             number *= int(component)
             operator = None
 
     return number
 
+
 def evaluate_advanced(expr):
     expr_list = expr.split()
 
     while True:
-        if not '+' in expr_list:
+        if not "+" in expr_list:
             break
         else:
             new_expr = []
@@ -31,10 +33,10 @@ def evaluate_advanced(expr):
             summing = False
 
             for component in expr_list:
-                if component == '*':
+                if component == "*":
                     new_expr.append(str(number))
                     new_expr.append(component)
-                elif component == '+':
+                elif component == "+":
                     summing = True
                 elif summing == False:
                     number = int(component)
@@ -50,34 +52,40 @@ def evaluate_advanced(expr):
     operator = None
 
     for component in expr_list:
-        if component == '*':
+        if component == "*":
             operator = component
         elif operator is None:
             result = int(component)
-        elif operator == '*':
+        elif operator == "*":
             result *= int(component)
             operator = None
 
     return result
+
 
 def find_parentheses(expr):
     start_idx = 0
     end_idx = 0
 
     for idx, char in enumerate(expr):
-        if char == '(':
+        if char == "(":
             start_idx = idx
-        elif char == ')':
+        elif char == ")":
             end_idx = idx
             break
 
     return start_idx, end_idx
 
+
 def collapse_parentheses_basic(expr):
     while True:
-        if '(' in expr:
+        if "(" in expr:
             start_idx, end_idx = find_parentheses(expr)
-            expr = expr[:start_idx] + str(evaluate_basic(expr[start_idx+1:end_idx])) + expr[end_idx+1:]
+            expr = (
+                expr[:start_idx]
+                + str(evaluate_basic(expr[start_idx + 1 : end_idx]))
+                + expr[end_idx + 1 :]
+            )
         else:
             break
 
@@ -88,9 +96,13 @@ def collapse_parentheses_basic(expr):
 
 def collapse_parentheses_advanced(expr):
     while True:
-        if '(' in expr:
+        if "(" in expr:
             start_idx, end_idx = find_parentheses(expr)
-            expr = expr[:start_idx] + str(evaluate_advanced(expr[start_idx+1:end_idx])) + expr[end_idx+1:]
+            expr = (
+                expr[:start_idx]
+                + str(evaluate_advanced(expr[start_idx + 1 : end_idx]))
+                + expr[end_idx + 1 :]
+            )
         else:
             break
 

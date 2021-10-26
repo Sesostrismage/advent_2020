@@ -8,7 +8,7 @@ f = open(os.path.join(curr_dir, "data.txt"))
 txt = f.readline()
 f.close()
 
-code_list = [int(item) for item in txt.split(',')]
+code_list = [int(item) for item in txt.split(",")]
 
 # Part 1.
 ic = IntCode(code_list, 12, 2)
@@ -25,7 +25,7 @@ for n in range(100):
         output = ic.run_code()
 
         if output == desired_output:
-            print('Match!')
+            print("Match!")
             print(f"Input 1: {n}, input 2: {m}")
             break
 

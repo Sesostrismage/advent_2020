@@ -1,18 +1,21 @@
 from collections import deque
 
+
 class LinkedListNode:
     def __init__(self, item):
         self.item = item
         self.left = None
         self.right = None
 
+
 my_input = [int(i) for i in "538914762"]
+
 
 def part1():
     my_cups = deque(my_input)
     for _ in range(100):
         orig = my_cups[0]
-        dest = my_cups[0]-1
+        dest = my_cups[0] - 1
 
         if dest < 1:
             dest = 9
@@ -41,8 +44,11 @@ def part1():
         my_cups.rotate(-1)
     my_cups.popleft()
 
-    return ''.join([str(i) for i in my_cups])
+    return "".join([str(i) for i in my_cups])
+
+
 print(f"Part 1 solution: {part1()}")
+
 
 def part2():
     my_nodes = {}
@@ -57,7 +63,7 @@ def part2():
             curr_node.left = last_node
 
         last_node = curr_node
-    for i in range(len(my_input)+1, 1_000_001):
+    for i in range(len(my_input) + 1, 1_000_001):
         curr_node = LinkedListNode(i)
         my_nodes[i] = curr_node
         if last_node is not None:
@@ -98,4 +104,6 @@ def part2():
         ptr = ptr.right
 
     return ptr.right.item * ptr.right.right.item
+
+
 print(f"Part 2 solution: {part2()}")

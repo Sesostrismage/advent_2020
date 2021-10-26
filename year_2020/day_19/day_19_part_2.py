@@ -1,16 +1,17 @@
 def rule_maker(raw_rules):
     rules = {}
     for rule in raw_rules:
-        key, value = rule.split(': ')
+        key, value = rule.split(": ")
         if value[0] == '"':
             rules[int(key)] = value[1:-1]
         else:
-            values = value.split(' | ')
+            values = value.split(" | ")
             temp_v = []
             for v in values:
-                temp_v.append([int(vv) for vv in v.split(' ')])
+                temp_v.append([int(vv) for vv in v.split(" ")])
             rules[int(key)] = temp_v
     return rules
+
 
 def match_rule(expr, stack):
     if len(stack) > len(expr):
@@ -28,6 +29,7 @@ def match_rule(expr, stack):
                 return True
     return False
 
+
 def count_messages(rules, messages):
     total = 0
     for message in messages:
@@ -35,8 +37,9 @@ def count_messages(rules, messages):
             total += 1
     return total
 
+
 with open(r"C:\Kode\advent_of_code\year_2020\day_19\data.txt") as fp:
-    raw_rules, message = fp.read().split('\n\n')
+    raw_rules, message = fp.read().split("\n\n")
     raw_rules = raw_rules.splitlines()
     message = message.splitlines()
 

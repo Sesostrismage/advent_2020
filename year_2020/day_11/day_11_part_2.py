@@ -11,7 +11,7 @@ f.close()
 
 txt_cleaned = [item.strip() for item in txt]
 txt_split = [list(item) for item in txt_cleaned]
-df = pd.DataFrame.from_records(txt_split).replace({'L': 0, '.': np.nan})
+df = pd.DataFrame.from_records(txt_split).replace({"L": 0, ".": np.nan})
 
 # print(df)
 
@@ -20,6 +20,7 @@ df_prev = df.copy()
 iteration = 1
 
 print(f"Initial number of seats: {df.notnull().sum().sum()}")
+
 
 def count_visible_seats(df_vis, r, c):
     visible_sum = 0
