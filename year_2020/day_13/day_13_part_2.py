@@ -12,8 +12,8 @@ bus_list = []
 
 counter = 0
 
-for bus in txt[1].split(','):
-    if bus != 'x':
+for bus in txt[1].split(","):
+    if bus != "x":
         bus_list.append([int(bus), counter])
 
     counter += 1
@@ -30,13 +30,10 @@ for bus in bus_list:
 
         while True:
             timestamp = step * factor + offset
-            if  (
-                (timestamp + bus[1]) % bus[0] == 0
-                and bus == bus_list[-1]
-            ):
+            if (timestamp + bus[1]) % bus[0] == 0 and bus == bus_list[-1]:
                 print(f"Success! {timestamp}")
                 break
-            elif  (timestamp + bus[1]) % bus[0] == 0:
+            elif (timestamp + bus[1]) % bus[0] == 0:
                 if first_match == False:
                     new_offset = timestamp
                     first_match = True

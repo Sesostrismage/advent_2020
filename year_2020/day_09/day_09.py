@@ -2,10 +2,7 @@ import os
 import pandas as pd
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
-df = pd.read_csv(
-    os.path.join(curr_dir, "data.txt"),
-    header=None
-)
+df = pd.read_csv(os.path.join(curr_dir, "data.txt"), header=None)
 
 # Part 1.
 def find_pair(segment, target):
@@ -20,13 +17,14 @@ def find_pair(segment, target):
 
     return answer
 
+
 preamble = 25
 
 for idx, row in df.iterrows():
     if idx < preamble:
         pass
     else:
-        seg = df.iloc[idx-preamble:idx, :]
+        seg = df.iloc[idx - preamble : idx, :]
         invalid_number = row[0]
 
         if not find_pair(seg, invalid_number):
@@ -45,6 +43,6 @@ while n < len(df):
     n += 1
 
 sum_idx = (roll_sum[roll_sum == invalid_number]).index[0]
-sum_segment = df[0].iloc[sum_idx-n+1:sum_idx+1]
+sum_segment = df[0].iloc[sum_idx - n + 1 : sum_idx + 1]
 
 print(f"Encyption weakness: {sum_segment.min() + sum_segment.max()}")

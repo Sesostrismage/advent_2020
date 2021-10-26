@@ -14,8 +14,8 @@ print(timestamp)
 
 bus_line_list = []
 
-for item in txt[1].split(','):
-    if item != 'x':
+for item in txt[1].split(","):
+    if item != "x":
         bus_line_list.append(int(item))
 
 print(bus_line_list)

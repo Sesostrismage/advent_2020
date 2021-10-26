@@ -2,6 +2,7 @@ import os
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 
+
 def load_hands(f_path):
     list_1 = []
     list_2 = []
@@ -10,18 +11,19 @@ def load_hands(f_path):
     f = open(f_path)
 
     for line in f.readlines():
-        if line == 'Player 1:\n':
-            state = 'p1'
-        elif line == 'Player 2:\n':
-            state = 'p2'
-        elif state == 'p1' and line != '\n':
+        if line == "Player 1:\n":
+            state = "p1"
+        elif line == "Player 2:\n":
+            state = "p2"
+        elif state == "p1" and line != "\n":
             list_1.append(int(line.strip()))
-        elif state == 'p2' and line != '\n':
+        elif state == "p2" and line != "\n":
             list_2.append(int(line.strip()))
 
     f.close()
 
     return list_1, list_2
+
 
 def calc_score(card_list):
     m = 1
@@ -32,6 +34,7 @@ def calc_score(card_list):
         m += 1
 
     return s
+
 
 def play_simple_game(list_1, list_2):
     w = 0
@@ -55,6 +58,7 @@ def play_simple_game(list_1, list_2):
             break
 
     return w, s
+
 
 def play_recursive_game(list_1, list_2):
     prev_hands_list = []
@@ -108,6 +112,7 @@ def play_recursive_game(list_1, list_2):
                 list_2 += [p2_card, p1_card]
 
     return w, s
+
 
 # Part 1.
 file_path = os.path.join(curr_dir, "data.txt")

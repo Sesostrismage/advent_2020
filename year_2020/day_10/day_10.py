@@ -3,10 +3,7 @@ import os
 import pandas as pd
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
-df = pd.read_csv(
-    os.path.join(curr_dir, "data.txt"),
-    header=None
-)
+df = pd.read_csv(os.path.join(curr_dir, "data.txt"), header=None)
 series = df[0]
 
 # series = pd.Series([16, 10, 15, 5, 1, 11, 7, 19, 6, 12, 4])
@@ -15,6 +12,7 @@ series = df[0]
 # ])
 
 time_start = datetime.datetime.now()
+
 
 def count_combinations(sequence):
     comb_list = [[sequence[0]]]
@@ -47,7 +45,7 @@ def chain(adapter_series):
         [
             pd.Series([0]),
             adapter_series.sort_values(),
-            pd.Series([adapter_series.max() + 3])
+            pd.Series([adapter_series.max() + 3]),
         ]
     ).reset_index(drop=True)
     series_diff = series_sorted.diff()
@@ -63,7 +61,7 @@ def chain(adapter_series):
     total_combinations = 1
 
     for idx in junction_series.index:
-        junction_list = list(series_sorted.iloc[prev_idx:idx+1])
+        junction_list = list(series_sorted.iloc[prev_idx : idx + 1])
 
         junction_combinations = count_combinations(junction_list)
         total_combinations = total_combinations * junction_combinations
@@ -71,6 +69,7 @@ def chain(adapter_series):
         prev_idx = idx
 
     print(f"Part 2 answer: {total_combinations}")
+
 
 chain(series)
 

@@ -3,14 +3,12 @@ import pandas as pd
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 df = pd.read_csv(
-    os.path.join(curr_dir, "data.txt"),
-    sep=' ',
-    header=None,
-    names=['raw']
+    os.path.join(curr_dir, "data.txt"), sep=" ", header=None, names=["raw"]
 )
 
-df['raw'] = df['raw'].str.replace('', ' ')
-geo = df['raw'].str.split(' ', expand=True).drop([0, 32], axis=1)
+df["raw"] = df["raw"].str.replace("", " ")
+geo = df["raw"].str.split(" ", expand=True).drop([0, 32], axis=1)
+
 
 def count_trees(geo_in, x_inc, y_inc):
     len_x = geo_in.shape[1]
@@ -20,7 +18,7 @@ def count_trees(geo_in, x_inc, y_inc):
     y = 0
 
     while True:
-        if geo_in.iloc[y, x] == '#':
+        if geo_in.iloc[y, x] == "#":
             c += 1
 
         x += x_inc
@@ -28,10 +26,11 @@ def count_trees(geo_in, x_inc, y_inc):
 
         x = x % len_x
 
-        if y > len_y -1:
+        if y > len_y - 1:
             break
 
     return c
+
 
 # Part 1.
 c_part_1 = count_trees(geo, 3, 1)

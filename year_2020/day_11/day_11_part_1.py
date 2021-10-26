@@ -3,12 +3,13 @@ import os
 import pandas as pd
 from scipy.ndimage.filters import convolve
 
+
 def iterate(a, k, m):
     while True:
         a_prev = np.copy(a)
-        c = convolve(a, k, mode='constant')
-        vacate_bool = ((a == 1) & (c >= 4))
-        fill_bool = ((a == 0) & (c == 0))
+        c = convolve(a, k, mode="constant")
+        vacate_bool = (a == 1) & (c >= 4)
+        fill_bool = (a == 0) & (c == 0)
         a[vacate_bool & m] = 0
         a[fill_bool & m] = 1
 
@@ -19,6 +20,7 @@ def iterate(a, k, m):
 
     return a
 
+
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 
 f = open(os.path.join(curr_dir, "data.txt"))
@@ -28,7 +30,7 @@ f.close()
 
 txt_cleaned = [item.strip() for item in txt]
 txt_split = [list(item) for item in txt_cleaned]
-df = pd.DataFrame.from_records(txt_split).replace({'L': 0, '.': np.nan})
+df = pd.DataFrame.from_records(txt_split).replace({"L": 0, ".": np.nan})
 print(f"Initial number of seats: {df.notnull().sum().sum()}")
 
 mask = df.notnull().values

@@ -13,7 +13,15 @@ f.close()
 
 txt_cleaned = [line.strip() for line in txt]
 
-dir_dict = {'e': [-1, 0], 'ne': [-1, 1], 'nw': [0, 1], 'w': [1, 0], 'sw': [1, -1], 'se': [0, -1]}
+dir_dict = {
+    "e": [-1, 0],
+    "ne": [-1, 1],
+    "nw": [0, 1],
+    "w": [1, 0],
+    "sw": [1, -1],
+    "se": [0, -1],
+}
+
 
 def split_directions(dir_str):
     dir_list_str = []
@@ -22,19 +30,21 @@ def split_directions(dir_str):
     while True:
         if idx >= len(dir_str):
             break
-        elif dir_str[idx] in ['n', 's']:
-            dir_list_str.append(dir_str[idx:idx+2])
+        elif dir_str[idx] in ["n", "s"]:
+            dir_list_str.append(dir_str[idx : idx + 2])
             idx += 2
         else:
-            dir_list_str.append(dir_str[idx:idx+1])
+            dir_list_str.append(dir_str[idx : idx + 1])
             idx += 1
 
     return dir_list_str
+
 
 def translate_directions(dir_list_str):
     dir_list_coords = [dir_dict[item] for item in dir_list_str]
 
     return dir_list_coords
+
 
 def calc_coords(dir_list_coords):
     x = 0
@@ -46,6 +56,7 @@ def calc_coords(dir_list_coords):
 
     return [x, y]
 
+
 def place_in_grid(cl):
     df = pd.DataFrame(0, index=range(500, -501, -1), columns=range(-500, 501))
 
@@ -56,6 +67,7 @@ def place_in_grid(cl):
 
     return a
 
+
 def flip_tiles(a, number_flips=100):
     k = np.ones([3, 3])
     k[0, 2] = 0
@@ -63,13 +75,14 @@ def flip_tiles(a, number_flips=100):
     k[1, 1] = 0
 
     for _ in range(number_flips):
-        c = convolve(a, k, mode='constant')
+        c = convolve(a, k, mode="constant")
         white_bool = (a == 1) & ((c == 0) | (c > 2))
         black_bool = (a == 0) & (c == 2)
         a[white_bool] = 0
         a[black_bool] = 1
 
     return np.sum(np.sum(a))
+
 
 # Part 1.
 coord_list = []

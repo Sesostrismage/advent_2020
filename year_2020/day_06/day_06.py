@@ -7,7 +7,7 @@ txt = f.readlines()
 f.close()
 
 txt_cleaned = [item.strip() for item in txt]
-txt_cleaned.append('')
+txt_cleaned.append("")
 
 # Part 1.
 answers_list = []

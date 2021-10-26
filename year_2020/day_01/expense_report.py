@@ -17,7 +17,7 @@ for idx_1, row_1 in df_1.iterrows():
         break
 
 t_end = datetime.datetime.now()
-print('Part 1 time:', t_end - t_start)
+print("Part 1 time:", t_end - t_start)
 
 
 # Second part of problem.
@@ -46,4 +46,4 @@ for idx_1, row_1 in df_1.iterrows():
             break
 
 t_end = datetime.datetime.now()
-print('Part 2 time:', t_end - t_start)
+print("Part 2 time:", t_end - t_start)
