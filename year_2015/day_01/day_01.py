@@ -3,10 +3,10 @@ import os
 import pandas as pd
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
-logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.DEBUG)
+logging.basicConfig(format="%(message)s", level=logging.DEBUG)
 
 # Part 1.
-f = open(os.path.join(curr_dir, "input.txt"), "r")
+f = open(os.path.join(curr_dir, "input_day_1.txt"), "r")
 input_day_1 = f.read()
 f.close()
 
