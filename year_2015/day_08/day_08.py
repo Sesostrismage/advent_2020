@@ -35,8 +35,6 @@ for line in puzzle_input:
     encoded_length = len(line) + 2
     encoded_length += line.count('"')
     encoded_length += line.count("\\")
-    # print(f"Code length: {code_length}")
-    # print(f"Encoded length: {encoded_length}")
 
     total_code_length += code_length
     total_encoded_length += encoded_length
