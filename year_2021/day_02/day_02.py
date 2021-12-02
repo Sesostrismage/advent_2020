@@ -1,7 +1,7 @@
 import os
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
-input_path = os.path.join(curr_dir, "input_day_02.txt")
+input_path = os.path.join(curr_dir, "puzzle_input_day_02.txt")
 
 with open(input_path, "r") as f:
     puzzle_input = f.readlines()
