@@ -84,5 +84,3 @@ for num in number_list:
         break
 
 print(f"Time: {timeit.timeit() - start}")
-
-# print(f"Part 2: {board.sum().sum() * number}")
