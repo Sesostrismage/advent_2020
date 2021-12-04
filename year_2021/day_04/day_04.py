@@ -52,7 +52,6 @@ print(f"Part 1: {board.sum().sum() * number}")
 
 # Part 2.
 board_list = create_boards(puzzle_input)
-stop_drawing = False
 
 for number in number_list:
     for board in board_list:
