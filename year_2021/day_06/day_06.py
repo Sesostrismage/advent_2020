@@ -22,8 +22,6 @@ class LanternFish:
         for fish in fish_list:
             self.age_dict[fish] += 1
 
-        print(self.age_dict)
-
     def count_fish(self) -> int:
         fish_count = 0
 
@@ -46,10 +44,10 @@ class LanternFish:
 # Part 1.
 lantern_fish = LanternFish(puzzle_input)
 lantern_fish.pass_time(80)
-print(lantern_fish.count_fish())
+print(f"Part 1: {lantern_fish.count_fish()}")
 
 
 # Part 2.
 lantern_fish = LanternFish(puzzle_input)
 lantern_fish.pass_time(256)
-print(lantern_fish.count_fish())
+print(f"Part 2: {lantern_fish.count_fish()}")
