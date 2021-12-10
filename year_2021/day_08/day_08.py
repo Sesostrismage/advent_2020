@@ -15,15 +15,21 @@ with open(input_path, "r") as f:
 
 class SSD:
     def __init__(self, puzzle_line: str) -> None:
-        self.signal_list = puzzle_line.split("|")[0].split()
+        self.signal_list = [set(item) for item in puzzle_line.split("|")[0].split()]
+        self.signal_dict = {}
+
+        for signal in self.signal_list:
+            l = len(signal)
+
+            if l not in self.signal_dict:
+                self.signal_dict[l] = [signal]
+            else:
+                self.signal_dict[l].append(signal)
+
         self.output_dict = {
             idx: set(item) for idx, item in enumerate(puzzle_line.split("|")[1].split())
         }
-        self.unmapped_outputs = {
-            idx: set(item) for idx, item in enumerate(puzzle_line.split("|")[1].split())
-        }
-        self.number_mapping = {n: None for n in range(10)}
-        self.size_dict = {0: 6, 1: 2, 2: 5, 3: 5, 4: 4, 5: 5, 6: 6, 7: 3, 8: 7, 9: 6}
+        self.in_out_map = {letter: None for letter in "abcdefg"}
 
     def count_unique(self):
         count = 0
@@ -34,65 +40,64 @@ class SSD:
 
         return count
 
-    def map_components(self):
-        # Map unambiguous values.
-        idx_list = self.output_dict.keys()
-        for idx in idx_list:
-            if len(self.output_dict[idx]) == 2:
-                self.number_mapping[1] = set(self.output_dict[idx])
-                self.unmapped_outputs.pop(idx)
-            elif len(self.output_dict[idx]) == 3:
-                self.number_mapping[7] = set(self.output_dict[idx])
-                self.unmapped_outputs.pop(idx)
-            elif len(self.output_dict[idx]) == 4:
-                self.number_mapping[4] = set(self.output_dict[idx])
-                self.unmapped_outputs.pop(idx)
+    def get_first(self, length):
+        if len(self.signal_dict[length]) > 0:
+            return self.signal_dict[length][0]
+        else:
+            return None
 
-        # Map length 5 values.
-        idx_list = self.output_dict.keys()
+    def get_wire_from_segment(self, val):
+        key = None
 
-        for idx in idx_list:
-            val = self.output_dict[idx]
-            if len(val) == 5:
-                if (self.number_mapping[1] is not None) and (
-                    self.number_mapping[1] <= val
-                ):
-                    self.number_mapping[3] = val
-                    self.unmapped_outputs.pop(idx)
-                elif (self.number_mapping[7] is not None) and (
-                    self.number_mapping[7] <= val
-                ):
-                    self.number_mapping[3] = val
-                    self.unmapped_outputs.pop(idx)
-                elif (self.number_mapping[4] is not None) and (
-                    len(self.number_mapping[4] & val) == 2
-                ):
-                    self.number_mapping[2] = val
-                    self.unmapped_outputs.pop(idx)
-                elif (self.number_mapping[4] is not None) and (
-                    len(self.number_mapping[4] & val) == 3
-                ):
-                    self.number_mapping[5] = val
-                    self.unmapped_outputs.pop(idx)
+        for k, v in self.in_out_map.items():
+            if v == val:
+                key = k
+                break
 
-        # Map length 6 values.
-        idx_list = self.output_dict.keys()
+        return key
 
-        for idx in idx_list:
-            if len(val) == 6:
-                if (self.number_mapping[4] is not None) and (
-                    self.number_mapping[4] <= val
-                ):
-                    self.number_mapping[9] = val
-                    self.unmapped_outputs.pop(idx)
-                elif (self.number_mapping[7] is not None) and (
-                    self.number_mapping[7] <= val
-                ):
-                    self.number_mapping[9] = val
-                    self.unmapped_outputs.pop(idx)
+    def map_wires(self):
+        digit_1 = self.get_first(2)
+        digit_7 = self.get_first(3)
+        digit_4 = self.get_first(4)
 
-    def __remove_from_unmapped(self, letter):
-        pass
+        if (digit_1 is not None) and (digit_7 is not None):
+            self.in_out_map[(digit_7 - digit_1).pop()] = "a"
+
+        if (digit_7 is not None) and (digit_4 is not None):
+            self.in_out_map[(digit_7 - digit_4).pop()] = "a"
+
+        for l6 in self.signal_dict[6]:
+            if digit_1 is not None:
+                if len(digit_1 - l6) == 1:
+                    self.in_out_map[(digit_1 - l6).pop()] = "c"
+                    continue
+
+        a_wire = self.get_wire_from_segment("a")
+        c_wire = self.get_wire_from_segment("c")
+
+        if (digit_1 is not None) and (c_wire is not None):
+            f_wire = (digit_1 - set([c_wire])).pop()
+            self.in_out_map[f_wire] = "f"
+
+        if digit_4 is not None:
+            for l5 in self.signal_dict[5]:
+                diff = digit_4 - l5
+                if (len(diff) == 1) and (c_wire is not None) and (diff != set(c_wire)):
+                    self.in_out_map[diff.pop()] = "b"
+
+        b_wire = self.get_wire_from_segment("b")
+
+        if (
+            (digit_4 is not None)
+            and (b_wire is not None)
+            and (c_wire is not None)
+            and (f_wire is not None)
+        ):
+            d_wire = (digit_4 - set(b_wire) - set(c_wire) - set(f_wire)).pop()
+            self.in_out_map[d_wire] = "d"
+        else:
+            d_wire = None
 
 
 unique_count = 0
@@ -108,5 +113,5 @@ print(f"Part 1: {unique_count}")
 # Part 2.
 for line in puzzle_input:
     ssd = SSD(line)
-    ssd.map_components()
-    print(ssd.unmapped_outputs)
+    ssd.map_wires()
+    print(ssd.in_out_map)
