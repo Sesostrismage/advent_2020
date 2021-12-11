@@ -7,7 +7,7 @@ start = timeit.timeit()
 
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
-input_path = os.path.join(curr_dir, "test_input_day_08.txt")
+input_path = os.path.join(curr_dir, "puzzle_input_day_08.txt")
 
 with open(input_path, "r") as f:
     puzzle_input = f.readlines()
@@ -26,15 +26,14 @@ class SSD:
             else:
                 self.signal_dict[l].append(signal)
 
-        self.output_dict = {
-            idx: set(item) for idx, item in enumerate(puzzle_line.split("|")[1].split())
-        }
+        self.output_list = [set(item) for item in puzzle_line.split("|")[1].split()]
         self.in_out_map = {letter: None for letter in "abcdefg"}
+        self.wire_map = {}
 
     def count_unique(self):
         count = 0
 
-        for item in self.output_dict.values():
+        for item in self.output_list:
             if len(item) in [2, 3, 4, 7]:
                 count += 1
 
@@ -99,6 +98,41 @@ class SSD:
         else:
             d_wire = None
 
+        if (digit_4 is not None) and (digit_7 is not None):
+            for l6 in self.signal_dict[6]:
+                diff = l6 - digit_4 - digit_7
+                if len(diff) == 1:
+                    g_wire = diff.pop()
+                    self.in_out_map[g_wire] = "g"
+
+                    for wire in "abcdefg":
+                        if self.in_out_map[wire] is None:
+                            e_wire = wire
+                            self.in_out_map[e_wire] = "e"
+                            break
+
+        self.wire_map["0"] = set([a_wire, b_wire, c_wire, e_wire, f_wire, g_wire])
+        self.wire_map["1"] = set([c_wire, f_wire])
+        self.wire_map["2"] = set([a_wire, c_wire, d_wire, e_wire, g_wire])
+        self.wire_map["3"] = set([a_wire, c_wire, d_wire, f_wire, g_wire])
+        self.wire_map["4"] = set([b_wire, c_wire, d_wire, f_wire])
+        self.wire_map["5"] = set([a_wire, b_wire, d_wire, f_wire, g_wire])
+        self.wire_map["6"] = set([a_wire, b_wire, d_wire, e_wire, f_wire, g_wire])
+        self.wire_map["7"] = set([a_wire, c_wire, f_wire])
+        self.wire_map["8"] = set(["a", "b", "c", "d", "e", "f", "g"])
+        self.wire_map["9"] = set([a_wire, b_wire, c_wire, d_wire, f_wire, g_wire])
+
+    def show_output(self):
+        num_str = ""
+        for output in self.output_list:
+            for num, segments in self.wire_map.items():
+                if output == segments:
+                    num_str += num
+                    break
+
+        num = int(num_str)
+        return num
+
 
 unique_count = 0
 
@@ -111,7 +145,11 @@ print(f"Part 1: {unique_count}")
 
 
 # Part 2.
+signal_sum = 0
+
 for line in puzzle_input:
     ssd = SSD(line)
     ssd.map_wires()
-    print(ssd.in_out_map)
+    signal_sum += ssd.show_output()
+
+print(f"Part 2: {signal_sum}")
