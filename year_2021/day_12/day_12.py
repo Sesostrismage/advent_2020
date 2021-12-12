@@ -1,10 +1,10 @@
 import os
-import timeit
+import datetime
 
 import numpy as np
 import pandas as pd
 
-start = timeit.timeit()
+start = datetime.datetime.now()
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 input_path = os.path.join(curr_dir, "puzzle_input_day_12.txt")
@@ -74,9 +74,14 @@ with open(input_path, "r") as f:
 # Part 1.
 path = Path(puzzle_input)
 path.explore(allow_doublet=False)
-print(f"Path 1: {len(path.paths)}")
+print(
+    f"Part 1: {len(path.paths)} in {(datetime.datetime.now() - start).total_seconds()}"
+)
 
 # Part 2.
+start = datetime.datetime.now()
 path = Path(puzzle_input)
 path.explore(allow_doublet=True)
-print(f"Part 2: {len(path.paths)}")
+print(
+    f"Part 2: {len(path.paths)} in {(datetime.datetime.now() - start).total_seconds()}"
+)
