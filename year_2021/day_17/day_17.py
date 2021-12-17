@@ -1,6 +1,4 @@
-import numpy as np
 import os
-import datetime
 
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 input_path = os.path.join(curr_dir, "puzzle_input_day_17.txt")
