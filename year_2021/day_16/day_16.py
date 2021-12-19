@@ -2,6 +2,10 @@ import copy
 import os
 import datetime
 
+"""
+This doesn't work yet.
+"""
+
 curr_dir = os.path.dirname(os.path.abspath(__file__))
 input_path = os.path.join(curr_dir, "test_input_2_day_16.txt")
 
